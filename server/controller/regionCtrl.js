@@ -36,13 +36,7 @@ const create = async (req, res) => {
                 region_file : req.files.file ? req.files.file[0].originalname : null
             })
             return res.send(region)
-        } else {
-            const region = await req.context.models.regions.create({
-                region_name: req.body.region_name
-            })
-            return res.send(region)
         }
-
     } catch (error) {
         return res.status(404).send(error)
     }
@@ -56,13 +50,6 @@ const createNext = async(req,res,next) => {
                 region_photo: req.files.foto ? req.files.foto[0].originalname : null,
                 region_file : req.files.file ? req.files.file[0].originalname : null
             })
-            req.regions = region
-            next()
-        } else {
-            const region = await req.context.models.regions.create({
-                region_name: req.body.region_name
-            })
-            
             req.regions = region
             next()
         }
@@ -79,11 +66,6 @@ const update = async (req, res) => {
                 region_name: req.body.region_name,
                 region_photo: req.files.foto ? req.files.foto[0].originalname : null,
                 region_file : req.files.file ? req.files.file[0].originalname : null
-            }, { returning: true, where: { region_id: req.params.id } })
-            return res.send(region)
-        } else {
-            const region = await req.context.models.regions.update({
-                region_name: req.body.region_name
             }, { returning: true, where: { region_id: req.params.id } })
             return res.send(region)
         }
