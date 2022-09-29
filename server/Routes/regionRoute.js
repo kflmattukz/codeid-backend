@@ -4,10 +4,11 @@ import uploadDownload from '../../middleware/uploadDownload'
 const router = Router()
 
 
-router.get('/',indexCtrl.RegCtrl.findAll)
-router.get('/:id',indexCtrl.RegCtrl.findOne)
-router.post('/',uploadDownload.send,indexCtrl.RegCtrl.create)
-router.put('/:id',uploadDownload.send,indexCtrl.RegCtrl.update)
-router.delete('/:id',indexCtrl.RegCtrl.deleted)
-router.get ('/sql/:id',indexCtrl.RegCtrl.querySQL)
+router.get('/', indexCtrl.RegCtrl.findAll)
+router.get('/:id', indexCtrl.RegCtrl.findOne)
+router.post('/', uploadDownload.upload, indexCtrl.RegCtrl.create)
+router.post('/next/',uploadDownload.upload, indexCtrl.RegCtrl.createNext, indexCtrl.CtsCtrl.createnext)
+router.put('/:id', uploadDownload.upload, indexCtrl.RegCtrl.update)
+router.delete('/:id', indexCtrl.RegCtrl.deleted)
+router.get('/sql/:id', indexCtrl.RegCtrl.querySQL)
 export default router

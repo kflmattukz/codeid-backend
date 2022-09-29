@@ -17,6 +17,10 @@ export default class regions extends Model {
     region_photo: {
       type: DataTypes.STRING(255),
       allowNull: true
+    },
+    region_file: {
+      type: DataTypes.STRING(255),
+      allowNull: true
     }
   }, {
     sequelize,

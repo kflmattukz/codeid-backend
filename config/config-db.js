@@ -5,14 +5,15 @@ const sequelize = new Sequelize(
     config.db_name,
     config.db_username,
     config.db_password,
+    config.db_port,
     {
-        dialect : 'postgres'
+        dialect: 'postgres'
     }
 )
 
 sequelize
     .authenticate()
-    .then(()=>console.log('connection has been estabilished successfully'))
+    .then(() => console.log('connection has been estabilished successfully'))
     .catch(err => console.log(err))
 
-export {sequelize}
+export { sequelize }
