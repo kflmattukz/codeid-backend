@@ -1,20 +1,21 @@
 import multer from "multer";
 
 const upload = multer({
-    dest: __dirname + '/images',
-    fileFilter: (req, file, cb) => {
-        if (file.mimetype === "image/png" ||
-            file.mimetype === "image/jpg" ||
-            file.mimetype === "image/jpeg" ||
-            file.mimetype === "application/pdf") {
-            cb(null, true)
-        } else {
-            cb(null, false)
-            return cb(new Error("Only .png, .jpg, .jpeg and .pdf format allowed"))
-        }
+    storage: multer.diskStorage({
+      destination: (req,file,callback) => callback(null, './images'),
+      filename: (req,file,callback) => callback(null, file.originalname)
+    }),
+    fileFilter: (req,file,callback) => {
+      const canUpload = ["image/png","image/jpg","image/jpeg","application/pdf"].some(type => file.mimetype === type)
+      if (canUpload) {
+        callback(null,true)
+      } else {
+        callback(null,false)
+        return callback(new Error('File type not Allowed. please upload image files and pdf only'))
+      }
     },
-    limits: { fileSize: 1 * 1024 * 1024 }
-}).fields([{name : 'file'},{name : 'foto'}])
+    limits:{fileSize: (1 * 1024 * 1024)} 
+  }).fields([{name : 'file'},{name : 'foto'}])
 
 export default {
     upload
