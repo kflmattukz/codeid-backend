@@ -40,17 +40,15 @@ const create = async (req, res) => {
 }
 
 const update = async (req, res) => {
-    const updateDepartment = {
-        department_name: req.body.department_name,
-        manage_id: req.body.manage_id,
-        location_id: req.body.location_id
-    }
-    updateDepartment = _.pickBy(updateDepartment, _.identity);
     try {
-        if (req.file) {
-            const department = await req.context.models.departments.update(updateDepartment, { returning: true, where: { department_id: req.params.id } })
-            return res.send(department)
+        let updateDepartment = {
+            department_name: req.body.department_name,
+            manage_id: req.body.manage_id,
+            location_id: req.body.location_id
         }
+        updateDepartment = _.pickBy(updateDepartment, _.identity);
+        const department = await req.context.models.departments.update(updateDepartment, { returning: true, where: { department_id: req.params.id } })
+        return res.send(department)
     } catch (error) {
         return res.status(404).send(error)
     }

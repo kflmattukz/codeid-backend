@@ -36,19 +36,18 @@ const create = async (req, res) => {
 }
 
 const update = async (req, res) => {
-    const updateJh = {
-        employee_id: req.body.employee_id,
-        start_date: req.body.start_date,
-        end_date: req.body.end_date,
-        job_id: req.body.job_id,
-        deparment_id: req.body.deparment_id
-    }
-    updateJh = _.pickBy(updateJh, _.identity);
     try {
-        if (req.file) {
-            const jh = await req.context.models.job_history.update(updateJh, { returning: true, where: { employee_id: req.params.id, jo_id:  req.params.jid}})
-            return res.send(jh)
+        let updateJh = {
+            employee_id: req.body.employee_id,
+            start_date: req.body.start_date,
+            end_date: req.body.end_date,
+            job_id: req.body.job_id,
+            deparment_id: req.body.deparment_id
         }
+        updateJh = _.pickBy(updateJh, _.identity);
+        const jh = await req.context.models.job_history.update(updateJh, { returning: true, where: { employee_id: req.params.id, jo_id:  req.params.jid}})
+        return res.send(jh)
+    
     } catch (error) {
         return res.status(404).send(error)
     }

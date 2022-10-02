@@ -12,7 +12,7 @@ const findAll = async (req, res) => {
 const findOne = async (req, res) => {
     try {
         const job = await req.context.models.jobs.findOne({
-            where: { job_id: req.params.id }
+            where: { job_id: req.params.id.toUpperCase() }
         })
         return res.send(job)
     } catch (error) {
@@ -35,18 +35,17 @@ const create = async (req, res) => {
 }
 
 const update = async (req, res) => {
-    const updateJob = {
-        job_id: req.body.job_id,
-        job_title: req.body.job_title,
-        min_salary: req.body.min_salary,
-        max_salary: req.body.max_salary
-    }
-    updateJob = _.pickBy(updateJob, _.identity);
     try {
-        if (req.file) {
-            const job = await req.context.models.jobs.update(updateJob, { returning: true, where: { job_id: req.params.id } })
-            return res.send(job)
+        let updateJob = {
+            job_id: req.body.job_id,
+            job_title: req.body.job_title,
+            min_salary: req.body.min_salary,
+            max_salary: req.body.max_salary
         }
+        updateJob = _.pickBy(updateJob, _.identity);
+        const job = await req.context.models.jobs.update(updateJob, { returning: true, where: { job_id: req.params.id.toUpperCase() } })
+        return res.send(job)
+        
     } catch (error) {
         return res.status(404).send(error)
     }
@@ -55,7 +54,7 @@ const update = async (req, res) => {
 const deleted = async (req, res) => {
     try {
         const job = await req.context.models.jobs.destroy({
-            where: { job_id: req.params.id }
+            where: { job_id: req.params.id.toUpperCase() }
         })
         return res.send('delete ' + job + ' rows')
     } catch (error) {
@@ -66,7 +65,7 @@ const deleted = async (req, res) => {
 const querySQL = async (req, res) => {
     try {
         await sequelize.query('SELECT * from jobs where job_id = :jobId',
-            { replacements: { jobId: req.params.id }, type: sequelize.QueryTypes.SELECT })
+            { replacements: { jobId: req.params.id.toUpperCase() }, type: sequelize.QueryTypes.SELECT })
             .then(result => {
                 return res.send(result)
             })

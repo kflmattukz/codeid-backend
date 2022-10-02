@@ -28,7 +28,7 @@ app.use(async(req,res,next)=> {
 
 app.use('/regions',routes.RegRoute)
 app.use('/auths',routes.UsrRoute)
-app.use('/countrys',routes.CtsRoute)
+app.use('/countries',routes.CtsRoute)
 app.use('/locations',routes.locationRoute)
 app.use('/departments',routes.departmentRoute)
 app.use('/employees',routes.employeeRoute)

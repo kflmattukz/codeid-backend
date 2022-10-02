@@ -60,7 +60,7 @@ const createNext = async(req,res,next) => {
 const update = async (req, res) => {
     console.log();
     try {
-        const updateRegion = {
+        let updateRegion = {
             region_name: req.body.region_name,
             region_photo: req.files.foto ? req.files.foto[0].originalname : null,
             region_file : req.files.file ? req.files.file[0].originalname : null
