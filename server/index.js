@@ -4,26 +4,36 @@ import cors from "cors";
 import compress from "compression";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
+import morgan from "morgan";
 import models,{sequelize} from "./models/init-models";
 import routes from './Routes/indexRoutes'
+import { use } from 'passport';
 
 const port = process.env.PORT || 3000;
-const app = express()
+const app = express();
 
-app.use(express.json())
-app.use(express.urlencoded({extended:true}))
-app.use(cookieParser())
-app.use(helmet())
-app.use(compress())
-app.use(cors())
+if (process.env.NODE_ENV === 'development') {
+    app.use(morgan('dev'));
+}
+app.use(express.json());
+app.use(express.urlencoded({extended:true}));
+app.use(cookieParser());
+app.use(helmet());
+app.use(compress());
+app.use(cors());
 app.use(async(req,res,next)=> {
-    req.context = {models}
-    next()
-})
+    req.context = {models};
+    next();
+});
 
-app.use('/region',routes.RegRoute)
-app.use('/auth',routes.UsrRoute)
-app.use('/country',routes.CtsRoute)
+app.use('/regions',routes.RegRoute)
+app.use('/auths',routes.UsrRoute)
+app.use('/countrys',routes.CtsRoute)
+app.use('/locations',routes.locationRoute)
+app.use('/departments',routes.departmentRoute)
+app.use('/employees',routes.employeeRoute)
+app.use('/jobs',routes.jobRoute)
+app.use('/jh',routes.jhRoute)
 app.use('/images',express.static('images'))
 
 const dropDatabaseSync = false

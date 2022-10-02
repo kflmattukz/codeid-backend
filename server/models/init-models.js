@@ -16,6 +16,7 @@ const sequelize = new Sequelize(
   config.db_username,
   config.db_password,
   {
+    logging: false,
     dialect: 'postgres',
     pool: {
       max: 5,

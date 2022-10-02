@@ -1,7 +1,7 @@
 import multer from "multer";
 
 const upload = multer({
-    dest: '/images',
+    dest: __dirname + '/images',
     fileFilter: (req, file, cb) => {
         if (file.mimetype === "image/png" ||
             file.mimetype === "image/jpg" ||

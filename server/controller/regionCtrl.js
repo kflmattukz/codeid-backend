@@ -1,6 +1,5 @@
-import { NOTFOUND } from "dns"
-import { sequelize } from "../models/init-models"
-
+import { sequelize } from "../models/init-models";
+import _ from "lodash";
 const findAll = async (req, res) => {
     try {
         const region = await req.context.models.regions.findAll({
@@ -61,14 +60,14 @@ const createNext = async(req,res,next) => {
 const update = async (req, res) => {
     console.log();
     try {
-        if (req.file) {
-            const region = await req.context.models.regions.update({
-                region_name: req.body.region_name,
-                region_photo: req.files.foto ? req.files.foto[0].originalname : null,
-                region_file : req.files.file ? req.files.file[0].originalname : null
-            }, { returning: true, where: { region_id: req.params.id } })
-            return res.send(region)
+        const updateRegion = {
+            region_name: req.body.region_name,
+            region_photo: req.files.foto ? req.files.foto[0].originalname : null,
+            region_file : req.files.file ? req.files.file[0].originalname : null
         }
+        updateRegion = _.pickBy(updateRegion, _.identity)
+        const region = await req.context.models.regions.update(updateRegion, { returning: true, where: { region_id: req.params.id } })
+        return res.send(region)
     } catch (error) {
         return res.status(404).send(error)
     }
